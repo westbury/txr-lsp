@@ -1,0 +1,14 @@
+[
+    {
+        txrFileUri: 'test1.txr',
+        testFileUris: [
+            'test1.txt', 'test2.txt'
+        ]
+    },
+    {
+        txrFileUri: 'test2.txr',
+        testFileUris: [
+            'testX.txt', 'testY.txt'
+        ]
+    }
+]

@@ -1,0 +1,37 @@
+{
+  "name": "@theia/txr-extension",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "next",
+    "@theia/editor": "next",
+    "@theia/filesystem": "next",
+    "@theia/languages": "next",
+    "@types/yaml": "1.2.0",
+    "yaml": "1.7.2"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "copyfiles": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "copy-ls": "rimraf build && copyfiles -f ../txr-language-server/build/libs/txr-language-server-1.0.0-SNAPSHOT.jar build",
+    "clean": "rimraf lib",
+    "build": "tsc && yarn run copy-ls",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/txr-frontend-extension",
+      "backend": "lib/node/backend-extension"
+    }
+  ]
+}

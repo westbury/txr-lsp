@@ -1,0 +1,11 @@
+ports:
+- port: 3000
+tasks:
+- init: >
+   cd txr-language-server &&
+   ./gradlew shadowJar &&
+   cd .. &&
+   yarn
+  command: >
+   cd app &&
+   yarn start ../example-workspace
