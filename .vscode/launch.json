@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Start Browser Backend",
+            "program": "${workspaceRoot}/app/src-gen/backend/main.js",
+            "args": [
+                "--loglevel=debug",
+                "--port=3000",
+                "--no-cluster",
+                "--LSP_PORT=5007"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+                "NODE_PRESERVE_SYMLINKS": "1"
+            },
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/node_modules/@theia/*/lib/**/*.js",
+                "${workspaceRoot}/app/lib/**/*.js",
+                "${workspaceRoot}/app/src-gen/**/*.js"
+            ],
+            "smartStep": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "outputCapture": "std"
+        }
+    ]
+}
