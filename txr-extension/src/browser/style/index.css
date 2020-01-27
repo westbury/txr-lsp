@@ -6,3 +6,7 @@
 .txr-TestViewTree .txr-TreeNode {
     width: 100%;
 }
+
+.txr-test-view-tab-icon::before {
+    content: url(txr32.png);
+}

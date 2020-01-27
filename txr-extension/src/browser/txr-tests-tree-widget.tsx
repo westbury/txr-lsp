@@ -36,7 +36,7 @@ export class TxrTestsTreeWidget extends TreeWidget {
         this.id = TEST_FILES_WIDGET_ID;
         this.title.label = 'TXR Tests';
         this.title.caption = 'TXR Tests';
-        this.title.iconClass = 'fa txr-tab-icon';
+        this.title.iconClass = 'txr-test-view-tab-icon';
         this.title.closable = true;
         this.addClass('txr-tests-tree-widget');
         this.toDispose.push(this.model.onSelectionChanged(selection => {
