@@ -11,6 +11,8 @@ import { WorkspaceService } from '@theia/workspace/lib/browser';
 import { FileSystem } from '@theia/filesystem/lib/common';
 import { LabelProvider } from '@theia/core/lib/browser/label-provider';
 import { TxrPatternNode } from './txr-tests-tree';
+import { TxrClientContribution } from './txr-language-contribution';
+// import { ExecuteCommandRequest } from 'monaco-languageclient/lib';
 import URI from '@theia/core/lib/common/uri';
 import { parse } from 'yaml';
 
@@ -22,7 +24,8 @@ export interface TestFileList {
 export type TxrOutputData = any;
 
 export interface TxrTestFileNode extends TreeNode, SelectableTreeNode, DecoratedTreeNode {
-    readonly uri: string;
+    readonly txrFileUri: string;
+    readonly textFileUri: string;
     readonly isMatchExpected?: boolean;
     readonly isMatchObtained?: boolean;
     readonly expectedOutput?: TxrOutputData;
@@ -31,7 +34,7 @@ export interface TxrTestFileNode extends TreeNode, SelectableTreeNode, Decorated
 
 export namespace TxrTestFileNode {
     export function is(node: TreeNode): node is TxrTestFileNode {
-        return 'uri' in node;
+        return 'txrFileUri' in node && 'textFileUri' in node;
     }
 }
 
@@ -51,6 +54,7 @@ export class TxrTestsTreeModel extends TreeModelImpl {
         @inject(WorkspaceService) protected readonly workspaceService: WorkspaceService,
         @inject(FileSystem) protected readonly fileSystem: FileSystem,
         @inject(LabelProvider) protected readonly labelProvider: LabelProvider,
+        @inject(TxrClientContribution) protected readonly languageContribution: TxrClientContribution,
     ) {
         super();
     };
@@ -69,12 +73,18 @@ export class TxrTestsTreeModel extends TreeModelImpl {
                 const configList: object[] = parse(fileContent.content);
                 for (const config of configList) {
                     if (TestFileList.is(config)) {
+                        // const client = await this.languageContribution.languageClient;
+                        // const result = await client.sendRequest(ExecuteCommandRequest.type, {
+                        //     command: 'runMatch',
+                        //     arguments: [ 'input text' ]
+                        // });
+                        
                         let decorationData: TreeDecoration.Data = {
                             tailDecorations: [
                                 {
                                     iconClass: ['fa', 'fa-check'],
                                     color: 'green',
-                                    tooltip: 'text matches as expected'
+                                    tooltip: 'text matches: ' //  + result,
                                 }
                             ]
                         };
@@ -118,13 +128,15 @@ export class TxrTestsTreeModel extends TreeModelImpl {
                     tooltip: 'text fails to match'
                 }
             ]
-};
+        };
 
+        const yamlDirectory = new URI(parent.txrFileUri).parent;
         const testFileNodes: TxrTestFileNode[] = config.testFileUris.map(testFileUri => ({
             id: parent.id + ':' + testFileUri,
             name: this.labelProvider.getName(new URI(testFileUri)),
             parent,
-            uri: testFileUri,
+            txrFileUri: parent.txrFileUri,
+            textFileUri: yamlDirectory.resolve(testFileUri).toString(),
             selected: false,
             decorationData,
         }));

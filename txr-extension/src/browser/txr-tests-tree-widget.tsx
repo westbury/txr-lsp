@@ -29,7 +29,7 @@ export class TxrTestsTreeWidget extends TreeWidget {
         @inject(TxrTestsTreeModel) readonly model: TxrTestsTreeModel,
         @inject(ContextMenuRenderer) contextMenuRenderer: ContextMenuRenderer,
         @inject(LabelProvider) protected readonly labelProvider: LabelProvider,
-        @inject(EditorManager) readonly editorManager: EditorManager
+        @inject(EditorManager) readonly editorManager: EditorManager,
     ) {
         super(props, model, contextMenuRenderer);
 
@@ -69,7 +69,7 @@ export class TxrTestsTreeWidget extends TreeWidget {
 
     protected renderTree(model: TreeModel): React.ReactNode {
         return super.renderTree(model)
-            || <div className='theia-widget-noInfo'>No callers have been detected.</div>;
+            || <div className='theia-widget-noInfo'>No TXR tests have been detected.  Create a txr-tests.yaml file in a project root in which tests are configured.</div>;
     }
 
     protected renderCaption(node: TreeNode, props: NodeProps): React.ReactNode {
@@ -79,7 +79,7 @@ export class TxrTestsTreeWidget extends TreeWidget {
     private openEditor(node: TreeNode, keepFocus: boolean) {
         if (TxrTestFileNode.is(node)) {
             this.editorManager.open(
-                new URI(node.uri), {
+                new URI(node.textFileUri), {
                     mode: keepFocus ? 'reveal' : 'activate'
                 }
             ).then(editorWidget => {
@@ -111,4 +111,5 @@ export class TxrTestsTreeWidget extends TreeWidget {
         //     this.model.initializeTxrTestsModel((oldState as any).testConfigFileUris);
         // }
     }
+
 }
