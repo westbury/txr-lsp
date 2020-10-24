@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: Exercise4
+Bundle-ManifestVersion: 2
+Bundle-Name: Exercise4
+Bundle-SymbolicName: txr.lsp.plugin
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: io.westbury.txr.lsp
+Bundle-ClassPath: .

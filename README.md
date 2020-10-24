@@ -49,7 +49,7 @@ or check it out locally.
 First start the language server from Eclipse.  This is currently configured to listen on port 5007.
 
 project: txr-language-server
-class: io.westbury.txr.Main
+class: io.westbury.txr.lsp.Main
 
 Build and start Theia
 ```
