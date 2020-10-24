@@ -9,13 +9,27 @@ import URI from '@theia/core/lib/common/uri';
 import { TxrMatcherWidget, TXR_MATCHER_WIDGET_ID, TxrMatcherWidgetOptions } from './txr-matcher-widget';
 
 export namespace TxrMatcherUri {
-    export const scheme = TXR_MATCHER_WIDGET_ID;
-    export function extractFromFragment(uri: URI): { txrFileUri: string, textFileUri: string } {
-        if (uri.scheme === scheme) {
-            const [ txrFileUri, textFileUri ] = uri.fragment.split(':');
-            return { txrFileUri, textFileUri };
+    export const txrMatcherScheme = 'txr-matcher';
+
+    export function extractFromUri(uri: URI): { txrFileUri: string, textFileUri: string } {
+        if (uri.scheme !== txrMatcherScheme) {
+            throw new Error((`The URI must have scheme "${txrMatcherScheme}". The URI was: ${uri}.`));
         }
-        throw new Error('The given uri is not an commit detail URI, uri: ' + uri);
+        const diffUris: string[] = JSON.parse(uri.query);
+        return { txrFileUri: diffUris[0], textFileUri: diffUris[1] };
+    }
+
+    export function encodeToUri(txrFileUri: URI, textFileUri: URI, label?: string): URI {
+        const txrTestUris = [
+            txrFileUri.toString(),
+            textFileUri.toString()
+        ];
+        const txrTestUriStr = JSON.stringify(txrTestUris);
+        return new URI().withScheme(TXR_MATCHER_WIDGET_ID).withPath(label || '').withQuery(txrTestUriStr);
+    }
+
+    export function isTxrTestUri(uri: URI): boolean {
+        return uri.scheme === txrMatcherScheme;
     }
 }
 
@@ -26,19 +40,17 @@ export class TxrMatcherOpenHandler extends WidgetOpenHandler<TxrMatcherWidget> {
     readonly id = TXR_MATCHER_WIDGET_ID;
 
     canHandle(uri: URI): number {
-        try {
-            TxrMatcherUri.extractFromFragment(uri);
+        if (TxrMatcherUri.isTxrTestUri(uri)) {
             return 200;
-        } catch {
-            return 0;
         }
+        return 0;
     }
 
     protected async doOpen(widget: TxrMatcherWidget, options: TxrMatcherOpenerOptions): Promise<void> {
-        widget.setContent({
-            txrFileUri: options.txrFileUri,
-            textFileUri: options.textFileUri,
-        });
+        // widget.setContent({
+        //     txrFileUri: options.txrFileUri,
+        //     textFileUri: options.textFileUri,
+        // });
         await super.doOpen(widget, options);
     }
 

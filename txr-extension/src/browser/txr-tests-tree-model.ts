@@ -11,7 +11,7 @@ import { WorkspaceService } from '@theia/workspace/lib/browser';
 import { FileSystem } from '@theia/filesystem/lib/common';
 import { LabelProvider } from '@theia/core/lib/browser/label-provider';
 import { TxrPatternNode } from './txr-tests-tree';
-import { TxrClientContribution } from './txr-language-contribution';
+// import { TxrClientContribution } from './txr-language-contribution';
 // import { ExecuteCommandRequest } from 'monaco-languageclient/lib';
 import URI from '@theia/core/lib/common/uri';
 import { parse } from 'yaml';
@@ -54,7 +54,7 @@ export class TxrTestsTreeModel extends TreeModelImpl {
         @inject(WorkspaceService) protected readonly workspaceService: WorkspaceService,
         @inject(FileSystem) protected readonly fileSystem: FileSystem,
         @inject(LabelProvider) protected readonly labelProvider: LabelProvider,
-        @inject(TxrClientContribution) protected readonly languageContribution: TxrClientContribution,
+        // @inject(TxrClientContribution) protected readonly languageContribution: TxrClientContribution,
     ) {
         super();
     };
@@ -67,7 +67,7 @@ export class TxrTestsTreeModel extends TreeModelImpl {
         const testFileLists: TxrPatternNode[] = [];
         const roots = this.workspaceService.tryGetRoots();
         for (const root of roots) {
-            const testConfigFileUri = root.uri + '/txr-tests.yaml';
+            const testConfigFileUri = root.resource.resolve('txr-tests.yaml').toString();
             if (await this.fileSystem.exists(testConfigFileUri)) {
                 const fileContent = await this.fileSystem.resolveContent(testConfigFileUri);
                 const configList: object[] = parse(fileContent.content);
@@ -84,12 +84,12 @@ export class TxrTestsTreeModel extends TreeModelImpl {
                                 {
                                     iconClass: ['fa', 'fa-check'],
                                     color: 'green',
-                                    tooltip: 'text matches: ' //  + result,
+                                    tooltip: 'text matches: ' // + result,
                                 }
                             ]
                         };
 
-                        const txrFileUri = new URI(root.uri).resolve(config.txrFileUri);
+                        const txrFileUri = root.resource.resolve(config.txrFileUri);
 
                         const testFileList: TxrPatternNode = {
                             id: txrFileUri.toString(),

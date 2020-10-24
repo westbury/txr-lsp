@@ -10,8 +10,9 @@ import { EDITOR_CONTEXT_MENU } from '@theia/editor/lib/browser';
 import { OpenerService, open } from '@theia/core/lib/browser';
 import { UriCommandHandler, UriAwareCommandHandler } from '@theia/core/lib/common/uri-command-handler';
 import URI from '@theia/core/lib/common/uri';
+import { EditorManager, EditorOpenerOptions } from '@theia/editor/lib/browser';
 import { TxrTestsTreeWidget, TEST_FILES_WIDGET_ID } from './txr-tests-tree-widget';
-import { TXR_MATCHER_WIDGET_ID } from './matcher/txr-matcher-widget'
+import { TxrMatcherUri } from './matcher/txr-matcher-open-handler';
 import { TxrNode, TxrTestFileNode } from './txr-tests-tree-model';
 
 export const TXR_TESTS_TOGGLE_KEYBINDING = 'alt+t';
@@ -49,6 +50,7 @@ export class TxrTestsContribution extends AbstractViewContribution<TxrTestsTreeW
     constructor(
         @inject(SelectionService) protected readonly selectionService: SelectionService,
         @inject(OpenerService) protected openerService: OpenerService,
+        @inject(EditorManager) protected readonly editorManager: EditorManager,
     ) {
         super({
             widgetId: TEST_FILES_WIDGET_ID,
@@ -74,17 +76,27 @@ export class TxrTestsContribution extends AbstractViewContribution<TxrTestsTreeW
             txrFileUri: node.txrFileUri,
             textFileUri: node.textFileUri,
             mode: 'reveal'
-        };
+        } as EditorOpenerOptions;
         open(
             this.openerService,
             this.toCommitDetailUri(node),
             options
         );
+
+        // @inject(TextEditorProvider)
+        // protected readonly editorProvider: TextEditorProvider;
+    
+    
+        // const uriToOpen = TxrMatcherUri.encodeToUri(
+        //     new URI(node.txrFileUri),
+        //     new URI(node.textFileUri),
+        //     node.textFileUri + ' (Matcher)');
+
+        // await this.editorManager.open(uriToOpen, options);
     }
 
     protected toCommitDetailUri(node: TxrTestFileNode): URI {
-        const fragment = `${node.txrFileUri}:${node.textFileUri}`; 
-        return new URI('').withScheme(TXR_MATCHER_WIDGET_ID).withFragment(fragment);
+        return TxrMatcherUri.encodeToUri(new URI(node.txrFileUri), new URI(node.textFileUri));
     }
 
     registerMenus(menus: MenuModelRegistry): void {

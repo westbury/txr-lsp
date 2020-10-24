@@ -5,7 +5,7 @@
 
 import { injectable, ContainerModule } from "inversify";
 import { createSocketConnection } from 'vscode-ws-jsonrpc/lib/server'
-import { BaseLanguageServerContribution, LanguageServerContribution, IConnection } from "@theia/languages/lib/node";
+import { BaseLanguageServerContribution, LanguageServerContribution, IConnection } from "@theia/txr-language/lib/node";
 import * as path from 'path';
 import * as net from 'net'
 

@@ -9,10 +9,10 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "next",
-    "@theia/editor": "next",
-    "@theia/filesystem": "next",
-    "@theia/languages": "next",
+    "@theia/core": "^1.6.0",
+    "@theia/editor": "^1.6.0",
+    "@theia/filesystem": "^1.6.0",
+    "@theia/txr-language": "^1.6.0",
     "@types/yaml": "1.2.0",
     "yaml": "1.7.2"
   },

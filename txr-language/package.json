@@ -1,0 +1,34 @@
+{
+  "name": "@theia/txr-language",
+  "keywords": [
+    "theia-extension"
+  ],
+  "license": "foo",
+  "version": "1.6.0",
+  "description": "Theia - Languages Extension",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/application-package": "^1.6.0",
+    "@theia/core": "^1.6.0",
+    "@theia/monaco-editor-core": "^0.19.3",
+    "@theia/process": "^1.6.0",
+    "@theia/workspace": "^1.6.0",
+    "@types/uuid": "^7.0.3",
+    "uuid": "^8.0.0"
+  },
+  "theiaExtensions": [
+    {
+      "backend": "lib/node/languages-backend-module"
+    }
+  ],
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "copy-ls": "rimraf build && copyfiles -f ../txr-language-server/build/libs/txr-language-server-1.0.0-SNAPSHOT.jar build",
+    "clean": "rimraf lib",
+    "build": "tsc -d && yarn run copy-ls",
+    "watch": "tsc -w"
+  }
+ }

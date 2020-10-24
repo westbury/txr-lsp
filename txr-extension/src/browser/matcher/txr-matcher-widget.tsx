@@ -10,8 +10,8 @@ import { EditorManager } from '@theia/editor/lib/browser';
 import { LabelProvider } from '@theia/core/lib/browser/label-provider';
 import * as React from 'react';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
-import { Widget } from '@theia/core/lib/browser';
-import { Message } from '@phosphor/messaging';
+// import { Widget } from '@theia/core/lib/browser';
+// import { Message } from '@phosphor/messaging';
 
 /* eslint-disable no-null/no-null */
 
@@ -23,20 +23,9 @@ export interface TxrMatcherWidgetOptions {
 
 export const TXR_MATCHER_WIDGET_ID = 'txr-matcher';
 @injectable()
-export class TxrMatcherWidget  extends ReactWidget implements StatefulWidget {
+export class TxrMatcherWidget extends ReactWidget implements StatefulWidget {
 
     protected options?: TxrMatcherWidgetOptions;
-
-    protected onActivateRequest(msg: Message): void {
-        super.onActivateRequest(msg);
-        this.update();
-        this.node.focus();
-    }
-
-    protected onResize(msg: Widget.ResizeMessage): void {
-        super.onResize(msg);
-        this.update();
-    }
 
     constructor(
         @inject(EditorManager) protected readonly editorManager: EditorManager,

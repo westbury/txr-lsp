@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: MIT
  ********************************************************************************/
 import { ContainerModule, Container, interfaces } from "inversify";
-import { LanguageClientContribution } from '@theia/languages/lib/browser';
+// import { LanguageClientContribution } from '@theia/languages/lib/browser';
 import { WidgetFactory, bindViewContribution } from '@theia/core/lib/browser';
 import { createTreeContainer, Tree, TreeImpl, TreeModel, TreeModelImpl, TreeWidget, TreeProps, defaultTreeProps } from '@theia/core/lib/browser';
-import { TxrClientContribution } from "./txr-language-contribution";
+// import { TxrClientContribution } from './txr-language-contribution';
 import { TxrTestsTree } from './txr-tests-tree';
 import { TxrTestsTreeModel } from './txr-tests-tree-model';
 import { TxrTestsTreeWidget, TEST_FILES_WIDGET_ID } from './txr-tests-tree-widget';
@@ -48,8 +48,8 @@ function createTxrTestsTreeWidget(parent: interfaces.Container): TxrTestsTreeWid
 }
 
 export default new ContainerModule(bind => {
-    bind(TxrClientContribution).toSelf().inSingletonScope();
-    bind(LanguageClientContribution).toService(TxrClientContribution);
+    // bind(TxrClientContribution).toSelf().inSingletonScope();
+    // bind(LanguageClientContribution).toService(TxrClientContribution);
 
     bind(WidgetFactory).toDynamicValue(context => ({
         id: TEST_FILES_WIDGET_ID,
